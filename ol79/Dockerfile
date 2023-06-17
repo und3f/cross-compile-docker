@@ -1,7 +1,7 @@
 FROM oraclelinux:7.9 as build
 
-ENV git git-2.9.5
-ENV go go1.20.5
+ARG git_version git_package 
+ARG go_version go_package
 
 RUN yum -y install oracle-golang-release-el7 oracle-release-el7 && \
     yum-config-manager --disable ol7_developer_golang\* && \
@@ -11,14 +11,14 @@ RUN yum -y install oracle-golang-release-el7 oracle-release-el7 && \
       gcc perl-ExtUtils-MakeMaker && \
     rm -rf /var/cache/yum/*
 
-ADD $git.tar.gz /build
-RUN cd /build/$git/ && \
+ADD $git_package /build
+RUN cd /build/git-$git_version/ && \
     make prefix=/usr/local/git all install && \
     yum -y remove git
 
 ENV PATH="/usr/local/git/bin:$PATH"
 
-ADD $go.src.tar.gz /build
+ADD $go_package /build
 
 RUN cd /build/go/src && \
     /bin/bash make.bash
