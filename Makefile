@@ -1,5 +1,6 @@
 TARGETS=ol79
 DOCKER=docker
+RM=rm
 
 GIT_VERSION=2.9.5
 GO_VERSION=1.20.5
@@ -16,7 +17,7 @@ GO_PACKAGE_FULL_PATH=$(PKG_DIR)/$(GO_PACKAGE)
 ALL_PACKAGES=$(GIT_PACKAGE_FULL_PATH) \
 						 $(GO_PACKAGE_FULL_PATH)
 
-.PHONY: $(TARGETS)
+.PHONY: $(TARGETS) clean
 
 all: $(TARGETS)
 
@@ -36,3 +37,6 @@ $(TARGETS): $(ALL_PACKAGES)
 		--tag $@ \
 		-f $@/Dockerfile \
 		$(PKG_DIR)
+
+clean:
+	$(RM) $(ALL_PACKAGES)
